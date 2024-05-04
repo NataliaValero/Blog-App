@@ -109,5 +109,4 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen),
     }
 
 
-
 }
