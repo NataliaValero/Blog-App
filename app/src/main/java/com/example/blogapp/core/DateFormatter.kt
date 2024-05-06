@@ -1,4 +1,4 @@
-package com.example.blogapp.utils
+package com.example.blogapp.core
 
 import android.text.format.DateUtils
 import java.util.Date

@@ -1,6 +1,7 @@
 package com.example.blogapp.ui.auth
 
 import android.os.Bundle
+import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -16,7 +17,6 @@ import com.example.blogapp.domain.auth.AuthRepositoryImpl
 import com.example.blogapp.presentation.auth.AuthViewModel
 import com.example.blogapp.presentation.auth.AuthViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
-import java.util.regex.Pattern
 
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
@@ -33,6 +33,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
         signUp()
 
+
     }
 
     private fun signUp() {
@@ -44,7 +45,9 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             val password = binding.editTextPassword.text.toString().trim()
             val confirmPassword = binding.editTextConfirmPass.text.toString().trim()
 
-            if (validateCredentials(username, email, password, confirmPassword)) {
+            suscribeCredentialObservers()
+
+            if (viewModel.validateCredentials(username, email, password, confirmPassword)) {
                 createUser(username, email, password)
             }
         }
@@ -77,53 +80,22 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         }
     }
 
-    private fun validateCredentials(
-        username: String,
-        email: String,
-        password: String,
-        confirmPassword: String
-    ): Boolean {
 
-
-        if (username.isEmpty()) {
-            binding.editTextUsername.error = "Username is empty"
-            return false
+    fun suscribeCredentialObservers() {
+        viewModel.usernameError.observe(viewLifecycleOwner) {
+            binding.usernameTxtField.helperText = it
+        }
+        viewModel.emailError.observe(viewLifecycleOwner) {
+            binding.emailTxtField.helperText = it
         }
 
-        if (email.isEmpty()) {
-            binding.editTextEmail.error = "E-mail is empty"
-            return false
+        viewModel.passwordError.observe(viewLifecycleOwner) {
+            binding.passwordTextinputLayout.helperText = it
+        }
+        viewModel.confirmPasswordError.observe(viewLifecycleOwner) {
+            binding.confirmTextinputLayout.helperText = it
         }
 
-        val pattern = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}\$")
-        val matcher = pattern.matcher(email)
-
-        if (!matcher.matches()) {
-            binding.editTextEmail.error = "E-mail is not valid"
-            return false
-        }
-
-        if (password.isEmpty()) {
-            binding.editTextPassword.error = "Password is empty"
-            return false
-        }
-
-        if (password.length < 6) {
-            binding.editTextPassword.error = "Password must be at least 6 characters"
-            return false
-        }
-
-        if (confirmPassword.isEmpty()) {
-            binding.editTextConfirmPass.error = "Confirm password is empty"
-            return false
-        }
-
-        if (password != confirmPassword) {
-            binding.editTextConfirmPass.error = "Password does not match"
-            return false
-        } else {
-            return true
-        }
     }
 
 }

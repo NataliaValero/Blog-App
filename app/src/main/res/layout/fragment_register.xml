@@ -11,9 +11,11 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/username_txt_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Username"
+        app:helperTextTextColor="@color/colorError"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -24,9 +26,12 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/email_txt_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:helperTextTextColor="@color/colorError"
         android:hint="E-mail"
         android:layout_marginTop="8dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -45,6 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
+        app:helperTextTextColor="@color/colorError"
         android:layout_marginTop="8dp"
         app:passwordToggleEnabled="true"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -63,6 +69,7 @@
         android:layout_height="wrap_content"
         android:hint="Confirm Password"
         android:layout_marginTop="8dp"
+        app:helperTextTextColor="@color/colorError"
         app:passwordToggleEnabled="true"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -73,7 +80,6 @@
             android:inputType="textPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <Button
         android:id="@+id/btn_signup"

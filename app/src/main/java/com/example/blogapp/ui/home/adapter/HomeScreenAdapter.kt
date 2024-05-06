@@ -1,7 +1,6 @@
 package com.example.blogapp.ui.home.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +10,7 @@ import com.example.blogapp.core.BaseViewHolder
 import com.example.blogapp.core.hide
 import com.example.blogapp.data.model.Post
 import com.example.blogapp.databinding.PostItemViewBinding
-import com.example.blogapp.utils.DateFormatter
+import com.example.blogapp.core.DateFormatter
 
 class HomeScreenAdapter(
     private var post: List<Post>,
