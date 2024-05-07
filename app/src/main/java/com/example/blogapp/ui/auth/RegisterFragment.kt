@@ -16,6 +16,8 @@ import com.example.blogapp.domain.auth.AuthRepositoryImpl
 import com.example.blogapp.presentation.auth.AuthViewModel
 import com.example.blogapp.presentation.auth.AuthViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
@@ -23,7 +25,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     private lateinit var binding: FragmentRegisterBinding
 
     private val viewModel by viewModels<AuthViewModel> {
-        AuthViewModelFactory(AuthRepositoryImpl(AuthDataSource(FirebaseAuth.getInstance())))
+        AuthViewModelFactory(AuthRepositoryImpl(AuthDataSource(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance(), FirebaseStorage.getInstance())))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

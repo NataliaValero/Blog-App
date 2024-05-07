@@ -18,6 +18,7 @@ import com.example.blogapp.domain.home.HomeScreenRepositoryImpl
 import com.example.blogapp.presentation.home.HomeScreenViewModel
 import com.example.blogapp.presentation.home.HomeScreenViewModelFactory
 import com.example.blogapp.ui.home.adapter.HomeScreenAdapter
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 
@@ -30,7 +31,7 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen),
 
 
     private val viewModel: HomeScreenViewModel by activityViewModels {
-        HomeScreenViewModelFactory(HomeScreenRepositoryImpl(HomeScreenDataSource(FirebaseFirestore.getInstance())))
+        HomeScreenViewModelFactory(HomeScreenRepositoryImpl(HomeScreenDataSource(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance())))
     }
 
 

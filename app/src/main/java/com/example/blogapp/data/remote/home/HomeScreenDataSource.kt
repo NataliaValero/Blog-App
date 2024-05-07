@@ -13,9 +13,7 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 
-class HomeScreenDataSource(private val firestore: FirebaseFirestore) {
-
-    val user = FirebaseAuth.getInstance().currentUser
+class HomeScreenDataSource(private val firestore: FirebaseFirestore, private val firebaseAuth: FirebaseAuth) {
 
     suspend fun getLatestPost(): Result<List<Post>> {
 
@@ -52,7 +50,7 @@ class HomeScreenDataSource(private val firestore: FirebaseFirestore) {
 
 
                         // Actualizar atributo liked en el post
-                        if (isPostLiked(postId, user?.uid.toString())) {
+                        if (isPostLiked(postId, firebaseAuth.currentUser?.uid.toString())) {
                             liked = true
                         } else {
                             liked = false
@@ -79,7 +77,7 @@ class HomeScreenDataSource(private val firestore: FirebaseFirestore) {
 
 
         // Current user
-        val uid = user?.uid
+        val uid = firebaseAuth.currentUser?.uid
 
         // Post Ref
         val postRef = firestore.collection("posts").document(postId)

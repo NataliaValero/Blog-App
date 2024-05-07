@@ -10,10 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 
-class AuthDataSource(private val firebaseAuth : FirebaseAuth) {
-
-    private val firebase = FirebaseFirestore.getInstance()
-    private val firestorage = FirebaseStorage.getInstance()
+class AuthDataSource(private val firebaseAuth : FirebaseAuth, private val firebase: FirebaseFirestore, private val fireStorage: FirebaseStorage) {
 
 
     suspend fun signUp(username: String, email:String, password: String) : FirebaseUser? {
@@ -40,7 +37,7 @@ class AuthDataSource(private val firebaseAuth : FirebaseAuth) {
         val user = currentUser
 
         // Save image firestorage using current user id
-        val imageRef = firestorage.reference.child("${user?.uid}/profile_picture.jpg")
+        val imageRef = fireStorage.reference.child("${user?.uid}/profile_picture.jpg")
         // Retorna downlod url from storage
         val downloadUrl = imageRef.putFile(profilePic).await().storage.downloadUrl.await().toString()
 

@@ -13,6 +13,8 @@ import com.example.blogapp.domain.auth.AuthRepositoryImpl
 import com.example.blogapp.presentation.auth.AuthViewModel
 import com.example.blogapp.presentation.auth.AuthViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
@@ -20,7 +22,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var binding: FragmentProfileBinding
 
     private val viewModelAuth by viewModels<AuthViewModel> {
-        AuthViewModelFactory(AuthRepositoryImpl(AuthDataSource(FirebaseAuth.getInstance())))
+        AuthViewModelFactory(AuthRepositoryImpl(AuthDataSource(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance(), FirebaseStorage.getInstance())))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -20,12 +20,14 @@ import com.example.blogapp.domain.auth.AuthRepositoryImpl
 import com.example.blogapp.presentation.auth.AuthViewModelFactory
 import com.example.blogapp.presentation.auth.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 
 class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
 
     private val viewModel by viewModels<AuthViewModel> {
-        AuthViewModelFactory(AuthRepositoryImpl(AuthDataSource(FirebaseAuth.getInstance())))
+        AuthViewModelFactory(AuthRepositoryImpl(AuthDataSource(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance(), FirebaseStorage.getInstance())))
     }
 
     private lateinit var binding: FragmentSetupProfileBinding
