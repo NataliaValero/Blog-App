@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -51,8 +52,6 @@ class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
         binding.btnCreateProfile.setOnClickListener {
             // Obtain photo an username
             val username = binding.usernameTxt.text.toString().trim()
-            val alertDialog =
-                AlertDialog.Builder(requireContext()).setTitle("Uploading photo...").show()
 
             imageUri?.let {
                 if (username.isNotEmpty()) {
@@ -61,16 +60,16 @@ class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
 
                             when (result) {
                                 is Result.Loading -> {
-                                    alertDialog.show()
+                                    Toast.makeText(requireContext(), "Uploading photo...", Toast.LENGTH_SHORT).show()
+                                    binding.btnCreateProfile.isEnabled = false
                                 }
 
                                 is Result.Success -> {
-                                    alertDialog.dismiss()
+
                                     findNavController().navigate(R.id.action_setupProfileFragment_to_homeScreenFragment)
                                 }
 
                                 is Result.Failure -> {
-                                    alertDialog.dismiss()
                                 }
                             }
                         }
@@ -104,6 +103,7 @@ class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
                 // Si la captura de imagen fue exitosa, mostrar la imagen en el ImageView
                 Log.d("CameraFragment", "Se tomó la foto exitosamente")
                 imageView.setImageURI(imageUri)
+                binding.btnCreateProfile.isEnabled = true
 
             } else {
                 // Si la captura de imagen fue cancelada o fallida, mostrar un mensaje de error

@@ -32,7 +32,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
 
     private lateinit var binding: FragmentCameraBinding
     private lateinit var imageView: ImageView
-    private lateinit var imageUri: Uri
+    private  var imageUri: Uri? = null
     private lateinit var contract : ActivityResultLauncher<Uri>
 
     private val viewModelCamera by viewModels<CameraViewModel> {
@@ -61,7 +61,8 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
             val imageUrl = imageUri
 
 
-            imageUrl.let {
+
+            imageUrl?.let {
                 viewModelCamera.uploadPhoto(imageUrl, postDescription).observe(viewLifecycleOwner) {result->
 
                     when(result) {
@@ -72,7 +73,6 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                         is Result.Success -> {
                             findNavController().navigate(R.id.action_cameraFragment_to_homeScreenFragment)
                             binding.descriptionTxt.text.clear()
-                            btnTakePicture.isEnabled = true
                         }
                         is Result.Failure -> {
 
@@ -81,6 +81,12 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
 
                 }
             }
+        }
+
+        binding.photoImage.setOnClickListener {
+            imageUri = createImageUri()
+            contract.launch(imageUri)
+
         }
 
     }
@@ -111,6 +117,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                 // Si la captura de imagen fue exitosa, mostrar la imagen en el ImageView
                 Log.d("CameraFragment", "Se tomó la foto exitosamente")
                 imageView.setImageURI(imageUri)
+                binding.btnUploadPhoto.isEnabled = true
 
 
                 // Subir la imagen a Firebase Storage
@@ -119,6 +126,7 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                 // Si la captura de imagen fue cancelada o fallida, mostrar un mensaje de error
                 Log.e("CameraFragment", "Error al capturar la imagen.")
                 imageView.setImageURI(null)
+                imageUri = null
             }
 
         }

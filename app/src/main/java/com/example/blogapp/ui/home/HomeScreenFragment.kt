@@ -31,7 +31,14 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen),
 
 
     private val viewModel: HomeScreenViewModel by activityViewModels {
-        HomeScreenViewModelFactory(HomeScreenRepositoryImpl(HomeScreenDataSource(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance())))
+        HomeScreenViewModelFactory(
+            HomeScreenRepositoryImpl(
+                HomeScreenDataSource(
+                    FirebaseFirestore.getInstance(),
+                    FirebaseAuth.getInstance()
+                )
+            )
+        )
     }
 
 
