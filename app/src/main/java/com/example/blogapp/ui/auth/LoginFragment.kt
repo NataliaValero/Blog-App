@@ -2,7 +2,6 @@ package com.example.blogapp.ui.auth
 
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -18,7 +17,6 @@ import com.example.blogapp.domain.auth.AuthRepositoryImpl
 import com.example.blogapp.presentation.auth.AuthViewModel
 import com.example.blogapp.presentation.auth.AuthViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
-import java.util.regex.Pattern
 
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -57,33 +55,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             val email = binding.editTextEmail.text.toString().trim()
             val password = binding.editTextPassword.text.toString().trim()
 
-            validateCredentials(email, password)
-            signIn(email, password)
-        }
-    }
+            suscribeCredentialsObservers()
 
-
-    private fun validateCredentials(email: String, password: String) {
-
-        // Verify that email is not empty
-        if (email.isEmpty()) {
-            binding.editTextEmail.error = "E-mail is empty"
-            return
-        }
-
-        // Verify that email is valid
-
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.editTextEmail.error = "E-mail is not valid"
-            return
-        }
-
-        // Verify that password is not empty
-
-        if (password.isEmpty()) {
-            binding.editTextPassword.error = "Password is empty"
-            return
+            if (viewModel.validateLogin(email, password)) {
+                signIn(email, password)
+            }
         }
     }
 
@@ -121,6 +97,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 }
 
             }
+        }
+    }
+
+    private fun suscribeCredentialsObservers() {
+        viewModel.emailError.observe(viewLifecycleOwner) {
+            binding.emailTxtField.helperText = it
+        }
+
+        viewModel.passwordError.observe(viewLifecycleOwner) {
+            binding.passwordTxtField.helperText = it
         }
     }
 

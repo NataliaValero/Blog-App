@@ -10,9 +10,11 @@
     tools:context=".ui.auth.LoginFragment">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/email_txt_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="E-mail"
+        app:helperTextTextColor="@color/colorError"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -25,9 +27,11 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password_txt_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
+        app:helperTextTextColor="@color/colorError"
         android:layout_marginTop="8dp"
         app:passwordToggleEnabled="true"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">

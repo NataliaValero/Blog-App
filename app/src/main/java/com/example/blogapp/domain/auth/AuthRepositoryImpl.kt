@@ -1,6 +1,5 @@
 package com.example.blogapp.domain.auth
 
-import android.graphics.Bitmap
 import android.net.Uri
 import com.example.blogapp.data.remote.auth.AuthDataSource
 import com.google.firebase.auth.FirebaseUser

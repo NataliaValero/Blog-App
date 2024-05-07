@@ -20,34 +20,59 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     val passwordError = MutableLiveData<String?>()
     val confirmPasswordError = MutableLiveData<String?>()
 
-    fun validateCredentials(
+
+    fun validateRegistration(
         username: String,
         email: String,
         password: String,
         confirmPassword: String
     ): Boolean {
-        val errors = CredentialsValidator.validate(username, email, password, confirmPassword)
 
-        var result = true
+        val usernameResult = CredentialsValidator.validateUsername(username)
+        val emailResult = CredentialsValidator.validateEmail(email)
+        val passwordResult = CredentialsValidator.validatePassword(password)
+        val confirmPasswordResult =
+            CredentialsValidator.validateConfirmPassword(confirmPassword, password)
 
-        val allErrorsEmpty = errors.values.all { it.isEmpty() }
-
-        if (!allErrorsEmpty) {
-            errors.forEach { (field, error) ->
-
-                when (field) {
-                    "username" -> usernameError.value = error
-                    "email" -> emailError.value = error
-                    "password" -> passwordError.value = error
-                    "confirmPassword" -> confirmPasswordError.value = error
-                }
-            }
-
-            result = false
+        val hasError = listOf(
+            usernameResult,
+            emailResult,
+            passwordResult,
+            confirmPasswordResult
+        ).any {
+            !it.isValid
         }
 
-        return result
+
+        if (hasError) {
+            usernameError.value = usernameResult.errorMessage
+            emailError.value = emailResult.errorMessage
+            passwordError.value = passwordResult.errorMessage
+            confirmPasswordError.value = confirmPasswordResult.errorMessage
+        }
+
+        return hasError
     }
+
+    fun validateLogin(email: String, password: String): Boolean {
+        val emailResult = CredentialsValidator.validateEmail(email)
+        val passwordResult = CredentialsValidator.validatePassword(password)
+
+        val hasError = listOf(
+            emailResult,
+            passwordResult
+        ).any {
+            !it.isValid
+        }
+
+        if (hasError) {
+            emailError.value = emailResult.errorMessage
+            passwordError.value = passwordResult.errorMessage
+        }
+
+        return hasError
+    }
+
 
     fun signUp(username: String, email: String, password: String) = liveData(Dispatchers.IO) {
 
