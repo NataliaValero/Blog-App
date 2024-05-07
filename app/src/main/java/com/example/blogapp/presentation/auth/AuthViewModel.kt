@@ -44,14 +44,13 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         }
 
 
-        if (hasError) {
-            usernameError.value = usernameResult.errorMessage
-            emailError.value = emailResult.errorMessage
-            passwordError.value = passwordResult.errorMessage
-            confirmPasswordError.value = confirmPasswordResult.errorMessage
-        }
+        usernameError.value = usernameResult.errorMessage
+        emailError.value = emailResult.errorMessage
+        passwordError.value = passwordResult.errorMessage
+        confirmPasswordError.value = confirmPasswordResult.errorMessage
 
-        return hasError
+
+        return !hasError
     }
 
     fun validateLogin(email: String, password: String): Boolean {
@@ -65,12 +64,11 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
             !it.isValid
         }
 
-        if (hasError) {
-            emailError.value = emailResult.errorMessage
-            passwordError.value = passwordResult.errorMessage
-        }
+        emailError.value = emailResult.errorMessage
+        passwordError.value = passwordResult.errorMessage
 
-        return hasError
+
+        return !hasError
     }
 
 
