@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -58,6 +59,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             val password = binding.editTextPassword.text.toString().trim()
 
             suscribeCredentialsObservers()
+            setTextlistener()
 
             if (viewModel.validateLogin(email, password)) {
                 signIn(email, password)
@@ -102,14 +104,33 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
     }
 
-    private fun suscribeCredentialsObservers() {
+    private fun suscribeCredentialsObservers() = with(binding) {
         viewModel.emailError.observe(viewLifecycleOwner) {
-            binding.emailTxtField.helperText = it
+
+            emailTxtField.isErrorEnabled = false
+            it?.let {
+                emailTxtField.error = it
+            }
         }
 
         viewModel.passwordError.observe(viewLifecycleOwner) {
-            binding.passwordTxtField.helperText = it
+
+            passwordTxtField.isErrorEnabled = false
+            it?.let {
+                passwordTxtField.error = it
+            }
         }
+    }
+
+    private fun setTextlistener() = with(binding) {
+        editTextEmail.addTextChangedListener {
+            viewModel.setEmailError(null)
+        }
+
+        editTextPassword.addTextChangedListener{
+            viewModel.setPasswordError(null)
+        }
+
     }
 
 

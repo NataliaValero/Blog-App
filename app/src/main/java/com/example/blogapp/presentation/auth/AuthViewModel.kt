@@ -71,6 +71,20 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         return !hasError
     }
 
+    fun setUsernameError(newError: String?) {
+        usernameError.value = newError
+    }
+
+    fun setEmailError(newError: String?) {
+        emailError.value = newError
+    }
+    fun setPasswordError(newError: String?) {
+        passwordError.value = newError
+    }
+
+    fun setConfirmPasswordError(newError: String?) {
+        confirmPasswordError.value = newError
+    }
 
     fun signUp(username: String, email: String, password: String) = liveData(Dispatchers.IO) {
 

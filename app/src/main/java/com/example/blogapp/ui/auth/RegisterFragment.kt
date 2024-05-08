@@ -3,6 +3,7 @@ package com.example.blogapp.ui.auth
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -47,6 +48,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             val confirmPassword = binding.editTextConfirmPass.text.toString().trim()
 
             suscribeCredentialObservers()
+            setTextlistener()
 
             if (viewModel.validateRegistration(username, email, password, confirmPassword)) {
                 createUser(username, email, password)
@@ -82,19 +84,51 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     }
 
 
-    fun suscribeCredentialObservers() {
+    fun suscribeCredentialObservers() = with(binding) {
         viewModel.usernameError.observe(viewLifecycleOwner) {
-            binding.usernameTxtField.helperText = it
+
+            usernameTxtField.isErrorEnabled = false
+            it?.let {
+                usernameTxtField.error = it
+            }
         }
         viewModel.emailError.observe(viewLifecycleOwner) {
-            binding.emailTxtField.helperText = it
+            emailTxtField.isErrorEnabled = false
+            it?.let {
+                emailTxtField.error = it
+            }
         }
 
         viewModel.passwordError.observe(viewLifecycleOwner) {
-            binding.passwordTextinputLayout.helperText = it
+            passwordTextinputLayout.isErrorEnabled = false
+            it?.let {
+                passwordTextinputLayout.error = it
+            }
         }
         viewModel.confirmPasswordError.observe(viewLifecycleOwner) {
-            binding.confirmTextinputLayout.helperText = it
+            confirmTextinputLayout.isErrorEnabled = false
+            it?.let {
+                confirmTextinputLayout.error = it
+            }
+        }
+
+    }
+
+    private fun setTextlistener() = with(binding) {
+        editTextUsername.addTextChangedListener {
+            viewModel.setUsernameError(null)
+        }
+
+        editTextEmail.addTextChangedListener {
+            viewModel.setEmailError(null)
+        }
+
+        editTextPassword.addTextChangedListener{
+            viewModel.setPasswordError(null)
+        }
+
+        editTextConfirmPass.addTextChangedListener {
+            viewModel.setConfirmPasswordError(null)
         }
 
     }

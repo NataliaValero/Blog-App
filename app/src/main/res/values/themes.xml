@@ -2,8 +2,22 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.BlogApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@android:color/transparent</item>
     </style>
 
     <style name="Theme.BlogApp" parent="Base.Theme.BlogApp" />
+
+
+    <style name="AuthText_Input_Style" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <item name="boxStrokeColor">@color/text_input_layout_stroke_color</item>
+        <item name="hintTextColor">@color/text_input_layout_stroke_color</item>
+        <item name="helperTextTextColor">@color/colorError</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="cursorColor">@color/text_input_layout_stroke_color</item>
+        <item name="cursorErrorColor">@color/colorError</item>
+
+    </style>
+
+
 </resources>
