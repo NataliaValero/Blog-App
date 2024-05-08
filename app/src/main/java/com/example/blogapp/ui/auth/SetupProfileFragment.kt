@@ -42,10 +42,12 @@ class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
         binding = FragmentSetupProfileBinding.bind(view)
 
         imageView = binding.profileImage
+
         takePictureContract()
 
 
         binding.profileImage.setOnClickListener {
+            imageUri = createImageUri()
             contract.launch(imageUri)
         }
 
@@ -112,5 +114,6 @@ class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
             }
 
         }
+
     }
 }
