@@ -8,10 +8,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -33,32 +33,54 @@ import com.example.blogapp.R
 
 
 @Composable
-fun RegularTextField(modifier: Modifier = Modifier, label : String) {
+fun RegularTextField(
+    modifier: Modifier = Modifier,
+    label: String,
+    onValueChangeListener: (String) -> Unit,
+    errorMessage :String?
+    ) {
 
-     var textValue by remember {
-         mutableStateOf("")
-     }
+    val isError = errorMessage != null
+
+    var textValue by remember {
+        mutableStateOf("")
+    }
 
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),
         label = { Text(text = label) },
         value = textValue,
         onValueChange = {
-            textValue = it
+            textValue = it.trim()
+            onValueChangeListener(textValue)
+
         },
+        isError = isError,
         keyboardOptions = KeyboardOptions.Default,
         colors = TextFieldDefaults.colors(
             focusedLabelColor = colorResource(id = R.color.text_input_layout_stroke_color),
-            focusedPlaceholderColor = colorResource(id = R.color.white),
             cursorColor = colorResource(id = R.color.text_input_layout_stroke_color),
-            focusedContainerColor = colorResource(id = R.color.white),
-            unfocusedContainerColor = colorResource(id = R.color.white)
-        )
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent
+        ),
+        supportingText = {
+            if(errorMessage != null) {
+                Text(text = errorMessage, style = MaterialTheme.typography.bodyMedium)
+            }
+        }
     )
+
+
 }
 
 @Composable
-fun PasswordTextField(modifier: Modifier = Modifier, label : String) {
+fun PasswordTextField(
+    modifier: Modifier = Modifier,
+    label: String,
+    onValueChangeListener: (String) -> Unit,
+    errorMessage: String?
+) {
+    val isError = errorMessage != null
 
     var password by remember {
         mutableStateOf("")
@@ -68,23 +90,24 @@ fun PasswordTextField(modifier: Modifier = Modifier, label : String) {
         mutableStateOf(false)
     }
 
-
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),
         label = { Text(text = label) },
         value = password,
         onValueChange = {
-            password = it
+            password = it.trim()
+            onValueChangeListener(password)
         },
+        isError = isError,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         trailingIcon = {
-             val iconImage = if(passwordVisible) {
-                 Icons.Filled.Visibility
-             } else {
-                 Icons.Filled.VisibilityOff
-             }
+            val iconImage = if (passwordVisible) {
+                Icons.Filled.Visibility
+            } else {
+                Icons.Filled.VisibilityOff
+            }
 
-            val description = if(passwordVisible) {
+            val description = if (passwordVisible) {
                 stringResource(id = R.string.hide_password)
             } else {
                 stringResource(id = R.string.show_password)
@@ -95,23 +118,30 @@ fun PasswordTextField(modifier: Modifier = Modifier, label : String) {
             }
 
         },
-        visualTransformation = if(passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         colors = TextFieldDefaults.colors(
             focusedLabelColor = colorResource(id = R.color.text_input_layout_stroke_color),
-            focusedPlaceholderColor = colorResource(id = R.color.white),
             cursorColor = colorResource(id = R.color.text_input_layout_stroke_color),
-            focusedContainerColor = colorResource(id = R.color.white),
-            unfocusedContainerColor = colorResource(id = R.color.white)
-        )
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent
+        ),
+        supportingText = {
+            if(errorMessage != null) {
+                Text(text = errorMessage,
+                    style = MaterialTheme.typography.bodyMedium)
+            }
+        }
     )
 }
 
 
 @Composable
-fun ButtonComponent(modifier: Modifier = Modifier, textButton : String) {
+fun ButtonComponent(modifier: Modifier = Modifier, textButton: String, onButtonClick: () -> Unit) {
 
     Button(
-        onClick = { /*TODO*/ },
+        onClick = {
+            onButtonClick()
+        },
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(45.dp),
@@ -122,7 +152,9 @@ fun ButtonComponent(modifier: Modifier = Modifier, textButton : String) {
         )
     ) {
 
-        Text(text = textButton,
-            fontSize = 16.sp)
+        Text(
+            text = textButton,
+            fontSize = 16.sp
+        )
     }
 }
