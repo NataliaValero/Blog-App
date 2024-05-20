@@ -11,7 +11,7 @@
         tools:layout="@layout/fragment_home_screen" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.blogapp.ui.auth.LoginFragment"
+        android:name="com.example.blogapp.ui.auth.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.blogapp.ui.auth.RegisterFragment"
+        android:name="com.example.blogapp.ui.auth.register.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -77,7 +77,7 @@
     </fragment>
     <fragment
         android:id="@+id/setupProfileFragment"
-        android:name="com.example.blogapp.ui.auth.SetupProfileFragment"
+        android:name="com.example.blogapp.ui.auth.setupProfile.SetupProfileFragment"
         android:label="fragment_setup_profile"
         tools:layout="@layout/fragment_setup_profile" >
         <action

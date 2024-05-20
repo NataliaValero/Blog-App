@@ -7,7 +7,8 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:gravity="center"
-    tools:context=".ui.auth.RegisterFragment">
+    android:background="@color/white"
+    tools:context=".ui.auth.register.RegisterFragment">
 
     <ImageView
         android:layout_width="200dp"

@@ -1,6 +1,5 @@
-package com.example.blogapp.ui.auth
+package com.example.blogapp.ui.auth.setupProfile
 
-import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -48,7 +47,9 @@ class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
 
         binding.profileImage.setOnClickListener {
             imageUri = createImageUri()
-            contract.launch(imageUri)
+            imageUri?.let {
+                contract.launch(it)
+            }
         }
 
         binding.btnCreateProfile.setOnClickListener {

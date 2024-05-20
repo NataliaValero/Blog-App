@@ -1,3 +1,4 @@
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -19,6 +20,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -31,13 +33,20 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+
     }
     kotlinOptions {
         jvmTarget = "1.8"
     }
     buildFeatures {
         viewBinding = true
+        compose = true
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
+
 }
 
 dependencies {
@@ -74,6 +83,22 @@ dependencies {
 
     // Play services coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+
+
+    // compose
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.bundles.compose)
+//    val composeBom = platform("androidx.compose:compose-bom:2023.08.00")
+//    implementation(composeBom)
+//
+//    implementation("androidx.compose.compiler:compiler:1.5.14")
+//    implementation("androidx.compose.runtime:runtime")
+//    implementation("androidx.compose.ui:ui")
+//    implementation("androidx.compose.foundation:foundation")
+//    implementation("androidx.compose.foundation:foundation-layout")
+//    implementation("androidx.compose.material:material")
+//    implementation("androidx.compose.runtime:runtime-livedata")
+//    implementation("androidx.compose.ui:ui-tooling")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

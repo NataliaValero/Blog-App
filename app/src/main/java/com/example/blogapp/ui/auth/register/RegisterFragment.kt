@@ -1,4 +1,4 @@
-package com.example.blogapp.ui.auth
+package com.example.blogapp.ui.auth.register
 
 import android.os.Bundle
 import android.view.View

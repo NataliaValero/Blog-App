@@ -85,8 +85,9 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
 
         binding.photoImage.setOnClickListener {
             imageUri = createImageUri()
-            contract.launch(imageUri)
-
+            imageUri?.let {
+                contract.launch(it)
+            }
         }
 
     }
