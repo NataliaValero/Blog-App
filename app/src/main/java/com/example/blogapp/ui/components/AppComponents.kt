@@ -1,6 +1,7 @@
 package com.example.blogapp.ui.components
 
 import android.util.Log
+import androidx.annotation.ColorRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,6 +33,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -40,6 +43,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.blogapp.R
 
+@Composable
+fun RegularTextComponent(
+    modifier: Modifier = Modifier,
+    text: String,
+   @ColorRes color: Int) {
+    Text(
+        modifier = modifier,
+        text = text,
+        fontSize = 16.sp,
+        fontStyle = FontStyle.Normal,
+        color = colorResource(id = color)
+    )
+}
+
+@Composable
+fun BoldTextComponent(
+    modifier: Modifier = Modifier,
+    text: String,
+    @ColorRes color: Int) {
+    Text(
+        modifier = modifier,
+        text = text,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Bold,
+        color = colorResource(id = color)
+    )
+}
 
 @Composable
 fun RegularTextField(
@@ -181,16 +211,17 @@ fun ProgressBarComponent(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun ButtonWithProgressBar(isLoading: Boolean, onButtonClick: () -> Unit) {
+fun ButtonWithProgressBar(modifier : Modifier = Modifier, isLoading: Boolean, onButtonClick: () -> Unit) {
 
     // Columna de boton con progress bar
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
 
         ButtonComponent(
+            modifier = modifier,
             textButton = stringResource(id = R.string.sign_up),
             enabled = !isLoading,
             onButtonClick = {
@@ -208,5 +239,10 @@ fun ButtonWithProgressBar(isLoading: Boolean, onButtonClick: () -> Unit) {
 @Preview
 @Composable
 fun ComposablePreview() {
-    ButtonWithProgressBar(isLoading = true, onButtonClick = {})
+
+    Column {
+        ButtonWithProgressBar(isLoading = false, onButtonClick = {})
+    }
+
+
 }
