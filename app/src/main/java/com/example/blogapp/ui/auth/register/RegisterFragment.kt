@@ -139,9 +139,10 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     fun compose() {
         binding.composeView.setContent {
 
+            val navController = findNavController()
             // Compose land
             MaterialTheme {
-                RegisterScreen(authViewModel = viewModel, navController = rememberNavController())
+                RegisterScreen(authViewModel = viewModel, navController = navController)
             }
 
         }

@@ -67,13 +67,14 @@ class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
                                     binding.btnCreateProfile.isEnabled = false
                                 }
 
-                                is Result.Success -> {
+                                is Result.Success<*>-> {
 
                                     findNavController().navigate(R.id.action_setupProfileFragment_to_homeScreenFragment)
                                 }
 
                                 is Result.Failure -> {
                                 }
+
                             }
                         }
                 }

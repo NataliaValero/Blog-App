@@ -88,6 +88,7 @@ dependencies {
     // compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.7")
 //    val composeBom = platform("androidx.compose:compose-bom:2023.08.00")
 //    implementation(composeBom)
 //

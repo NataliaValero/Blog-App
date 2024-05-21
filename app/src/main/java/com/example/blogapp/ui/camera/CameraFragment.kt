@@ -70,13 +70,14 @@ class CameraFragment : Fragment(R.layout.fragment_camera) {
                             Toast.makeText(requireContext(), "Uploading photo...", Toast.LENGTH_SHORT).show()
                             btnTakePicture.isEnabled = false
                         }
-                        is Result.Success -> {
+                        is Result.Success<*> -> {
                             findNavController().navigate(R.id.action_cameraFragment_to_homeScreenFragment)
                             binding.descriptionTxt.text.clear()
                         }
                         is Result.Failure -> {
 
                         }
+
                     }
 
                 }

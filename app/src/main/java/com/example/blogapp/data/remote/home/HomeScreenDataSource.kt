@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 
 class HomeScreenDataSource(private val firestore: FirebaseFirestore, private val firebaseAuth: FirebaseAuth) {
 
-    suspend fun getLatestPost(): Result<List<Post>> {
+    suspend fun getLatestPost(): Result.Success<MutableList<Post>> {
 
         val postList = mutableListOf<Post>()
 

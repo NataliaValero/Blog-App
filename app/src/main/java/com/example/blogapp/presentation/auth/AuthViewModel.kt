@@ -11,11 +11,10 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.blogapp.core.CredentialsValidator
 import com.example.blogapp.core.Result
+import com.example.blogapp.data.model.User
 import com.example.blogapp.domain.auth.AuthRepository
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
@@ -32,8 +31,11 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     val passwordErrorState : MutableState<String?> = mutableStateOf(null)
     val confirmPasswordErrorState : MutableState<String?> = mutableStateOf(null)
 
-    private val _signUpState = MutableStateFlow<Result>(Result.Idle)
-    val signUpState : StateFlow<Result> = _signUpState
+
+
+    //private val _signUpState = mutableStateOf(Result)
+    val signUpState:MutableLiveData<Result<FirebaseUser?>> = MutableLiveData()
+
 
 
 
@@ -133,48 +135,48 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     fun signUp(username: String, email: String, password: String) {
         viewModelScope.launch {
 
-            _signUpState.value = Result.Loading
+            signUpState.value = Result.Loading()
 
             try {
                 val result = repository.signUp(username, email, password)
-                _signUpState.value = Result.Success(result)
+                signUpState.value = Result.Success(result)
             } catch (e: Exception) {
-                _signUpState.value = Result.Failure(e)
+                signUpState.value = Result.Failure(e)
             }
 
         }
     }
 
-    fun signIn(email: String, password: String) {
-        viewModelScope.launch {
-
-            _signUpState.value = Result.Loading
-
-            try {
-                val result = repository.signIn(email, password)
-                _signUpState.value = Result.Success(result)
-            } catch (e: Exception) {
-                _signUpState.value = Result.Failure(e)
-            }
-
-        }
-    }
-
-
-
-//    fun signIn(email: String, password: String) = liveData(Dispatchers.IO) {
+//    fun signIn(email: String, password: String) {
+//        viewModelScope.launch {
 //
-//        emit(Result.Loading)
+//            _signUpState.value = Result.Loading
 //
-//        try {
-//            emit(Result.Success(repository.signIn(email, password)))
-//        } catch (e: Exception) {
-//            emit(Result.Failure(e))
+//            try {
+//                val result = repository.signIn(email, password)
+//                _signUpState.value = Result.Success(result)
+//            } catch (e: Exception) {
+//                _signUpState.value = Result.Failure(e)
+//            }
+//
 //        }
 //    }
 
+
+
+    fun signIn(email: String, password: String) = liveData(Dispatchers.IO) {
+
+        emit(Result.Loading())
+
+        try {
+            emit(Result.Success(repository.signIn(email, password)))
+        } catch (e: Exception) {
+            emit(Result.Failure(e))
+        }
+    }
+
     fun updateUserProfile(profilePic: Uri, username: String) = liveData(Dispatchers.IO) {
-        emit(Result.Loading)
+        emit(Result.Loading())
 
         try {
             emit(Result.Success(repository.updateProfile(profilePic, username)))
