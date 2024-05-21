@@ -203,5 +203,10 @@ fun ButtonWithProgressBar(isLoading: Boolean, onButtonClick: () -> Unit) {
         }
     }
 
+}
 
+@Preview
+@Composable
+fun ComposablePreview() {
+    ButtonWithProgressBar(isLoading = true, onButtonClick = {})
 }

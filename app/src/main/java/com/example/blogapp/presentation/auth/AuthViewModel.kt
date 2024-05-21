@@ -74,7 +74,6 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         passwordError.value = passwordResult.errorMessage
 
 
-
         return !hasError
     }
 
@@ -143,24 +142,8 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
             } catch (e: Exception) {
                 signUpState.value = Result.Failure(e)
             }
-
         }
     }
-
-//    fun signIn(email: String, password: String) {
-//        viewModelScope.launch {
-//
-//            _signUpState.value = Result.Loading
-//
-//            try {
-//                val result = repository.signIn(email, password)
-//                _signUpState.value = Result.Success(result)
-//            } catch (e: Exception) {
-//                _signUpState.value = Result.Failure(e)
-//            }
-//
-//        }
-//    }
 
 
 
