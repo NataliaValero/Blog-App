@@ -1,6 +1,7 @@
 package com.example.blogapp.presentation.auth
 
 import android.net.Uri
+import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
@@ -22,22 +23,14 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
 
 
 
-    val emailError = MutableLiveData<String?>()
-    val passwordError = MutableLiveData<String?>()
-
-
     val usernameErrorState : MutableState<String?> = mutableStateOf(null)
     val emailErrorState : MutableState<String?> = mutableStateOf(null)
     val passwordErrorState : MutableState<String?> = mutableStateOf(null)
     val confirmPasswordErrorState : MutableState<String?> = mutableStateOf(null)
 
 
-
-    //private val _signUpState = mutableStateOf(Result)
     val signUpState:MutableLiveData<Result<FirebaseUser?>> = MutableLiveData()
-
-
-
+    val signInState:MutableLiveData<Result<FirebaseUser?>> = MutableLiveData()
 
 
     fun validateRegistration(
@@ -69,11 +62,6 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         confirmPasswordErrorState.value = confirmPasswordResult.errorMessage
 
 
-
-        emailError.value = emailResult.errorMessage
-        passwordError.value = passwordResult.errorMessage
-
-
         return !hasError
     }
 
@@ -88,21 +76,12 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
             !it.isValid
         }
 
-        emailError.value = emailResult.errorMessage
-        passwordError.value = passwordResult.errorMessage
+        emailErrorState.value = emailResult.errorMessage
+        passwordErrorState.value = passwordResult.errorMessage
 
 
         return !hasError
     }
-
-
-    fun setEmailError(newError: String?) {
-        emailError.value = newError
-    }
-    fun setPasswordError(newError: String?) {
-        passwordError.value = newError
-    }
-
 
     fun setUsernameStateError(newError: String?) {
         usernameErrorState.value = newError
@@ -147,14 +126,28 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
 
 
 
-    fun signIn(email: String, password: String) = liveData(Dispatchers.IO) {
+//    fun signIn(email: String, password: String) = liveData(Dispatchers.IO) {
+//
+//        emit(Result.Loading())
+//
+//        try {
+//            emit(Result.Success(repository.signIn(email, password)))
+//        } catch (e: Exception) {
+//            emit(Result.Failure(e))
+//        }
+//    }
 
-        emit(Result.Loading())
+    fun signIn(email: String, password: String) {
+        viewModelScope.launch {
 
-        try {
-            emit(Result.Success(repository.signIn(email, password)))
-        } catch (e: Exception) {
-            emit(Result.Failure(e))
+            signInState.value = Result.Loading()
+
+            try {
+                val result = repository.signIn(email, password)
+                signInState.value = Result.Success(result)
+            } catch (e: Exception) {
+                signInState.value = Result.Failure(e)
+            }
         }
     }
 

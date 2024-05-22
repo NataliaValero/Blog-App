@@ -5,94 +5,11 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center"
     tools:context=".ui.auth.login.LoginFragment">
-    
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="70dp"
-        android:src="@drawable/instagram_logo"
-        android:layout_marginBottom="20dp"/>
-    
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/email_txt_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="E-mail"
-        style="@style/AuthText_Input_Style">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/password_txt_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:layout_marginTop="8dp"
-        app:passwordToggleEnabled="true"
-        style="@style/AuthText_Input_Style">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-     <androidx.appcompat.widget.AppCompatButton
-         android:id="@+id/btn_signin"
-         android:layout_width="match_parent"
-         android:layout_height="45dp"
-         android:text="Log In"
-         android:textAllCaps="false"
-         android:textSize="16sp"
-         android:textColor="@color/white"
-         android:background="@drawable/background_blue_button"
-         android:layout_marginTop="20dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:text="Don't have an account? " />
-
-        <TextView
-            android:id="@+id/txt_signup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign up"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="@color/blue"/>
-
-
-    </LinearLayout>
-
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/login_compose_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
-
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

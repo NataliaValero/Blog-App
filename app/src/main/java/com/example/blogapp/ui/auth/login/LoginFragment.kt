@@ -1,9 +1,15 @@
 package com.example.blogapp.ui.auth.login
 
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,123 +28,59 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 
 
-class LoginFragment : Fragment(R.layout.fragment_login) {
+class LoginFragment() : Fragment() {
 
-    private lateinit var binding: FragmentLoginBinding
+
+
+    private lateinit var loginComposeView : ComposeView
 
     private val viewModel by viewModels<AuthViewModel> {
-        AuthViewModelFactory(AuthRepositoryImpl(AuthDataSource(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance(), FirebaseStorage.getInstance())))
+        AuthViewModelFactory(
+            AuthRepositoryImpl(
+                AuthDataSource(
+                    FirebaseAuth.getInstance(),
+                    FirebaseFirestore.getInstance(),
+                    FirebaseStorage.getInstance()
+                )
+            )
+        )
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return ComposeView(requireContext()).also {
+            loginComposeView = it
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentLoginBinding.bind(view)
-        isUserLoggedIn()
-        doLogin()
-        goToSignUpPage()
 
+
+        loginComposeView.setContent {
+            val navController = findNavController()
+
+            MaterialTheme {
+                LoginScreen(authViewModel = viewModel, navController = navController)
+            }
+        }
+
+        isUserLoggedIn()
     }
 
     private fun isUserLoggedIn() {
         viewModel.currentUser?.let {
 
             // Asegura que el usuario logeado suba foto de perfil y username en caso de no tenerlo
-
-            if (it.displayName.isNullOrEmpty()) {
-                findNavController().navigate(R.id.action_loginFragment_to_setupProfileFragment)
-            } else {
+            if (!it.displayName.isNullOrEmpty()) {
                 findNavController().navigate(R.id.action_loginFragment_to_homeScreenFragment)
+            } else {
+                findNavController().navigate(R.id.action_loginFragment_to_setupProfileFragment)
             }
         }
 
     }
-
-    private fun doLogin() {
-        binding.btnSignin.setOnClickListener {
-            val email = binding.editTextEmail.text.toString().trim()
-            val password = binding.editTextPassword.text.toString().trim()
-
-            suscribeCredentialsObservers()
-            setTextlistener()
-
-            if (viewModel.validateLogin(email, password)) {
-                signIn(email, password)
-            }
-        }
-    }
-
-    private fun signIn(email: String, password: String) {
-
-        viewModel.signIn(email, password).observe(viewLifecycleOwner) {
-            when (it) {
-                is Result.Loading -> {
-                    binding.progressBar.show()
-                    binding.btnSignin.isEnabled = false
-                }
-
-                is Result.Success -> {
-                    binding.progressBar.hide()
-
-                    if (it.data?.displayName.isNullOrEmpty()) {
-                        findNavController().navigate(R.id.action_loginFragment_to_setupProfileFragment)
-
-                    } else {
-                        findNavController().navigate(R.id.action_loginFragment_to_homeScreenFragment)
-                    }
-
-                    Log.d("user", "${it.data?.displayName.toString()}")
-
-                }
-
-                is Result.Failure -> {
-                    binding.progressBar.hide()
-                    binding.btnSignin.isEnabled = true
-                    Toast.makeText(
-                        requireContext(),
-                        "Error: ${it.exception}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-            }
-        }
-    }
-
-    private fun suscribeCredentialsObservers() = with(binding) {
-        viewModel.emailError.observe(viewLifecycleOwner) {
-
-            emailTxtField.isErrorEnabled = false
-            it?.let {
-                emailTxtField.error = it
-            }
-        }
-
-        viewModel.passwordError.observe(viewLifecycleOwner) {
-
-            passwordTxtField.isErrorEnabled = false
-            it?.let {
-                passwordTxtField.error = it
-            }
-        }
-    }
-
-    private fun setTextlistener() = with(binding) {
-        editTextEmail.addTextChangedListener {
-            viewModel.setEmailError(null)
-        }
-
-        editTextPassword.addTextChangedListener{
-            viewModel.setPasswordError(null)
-        }
-
-    }
-
-
-    private fun goToSignUpPage() {
-        binding.txtSignup.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-        }
-    }
-
-
 }
