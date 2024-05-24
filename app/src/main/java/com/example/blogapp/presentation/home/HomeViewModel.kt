@@ -1,30 +1,40 @@
 package com.example.blogapp.presentation.home
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.blogapp.core.Result
+import com.example.blogapp.data.model.Post
 import com.example.blogapp.domain.home.HomeScreenRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(private val repository: HomeScreenRepository) : ViewModel() {
 
 
-    fun fetchLatestPosts() = liveData(Dispatchers.IO) {
+    private val _fetchData : MutableLiveData<Result<List<Post>>> = MutableLiveData()
+    val fetchData : LiveData<Result<List<Post>>> = _fetchData
 
-
-        emit(Result.Loading())
-
-        kotlin.runCatching {
-            repository.getLatestPost()
-        }.onSuccess {
-            emit(it)
-        }.onFailure {
-            emit(Result.Failure(Exception(it.message)))
-        }
+    init {
+        fetchDataPost()
     }
 
+    fun fetchDataPost() {
+        viewModelScope.launch {
+
+            _fetchData.value = Result.Loading()
+
+            try {
+                val result = repository.getLatestPost()
+                _fetchData.value = result
+            } catch (e: Exception) {
+                _fetchData.value = Result.Failure(e)
+            }
+        }
+    }
 
     fun registerLikeButtonState(postId: String, liked: Boolean) =
         liveData(viewModelScope.coroutineContext + Dispatchers.Main) {

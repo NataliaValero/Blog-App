@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.compose.material3.MaterialTheme
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -49,44 +50,45 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen),
         binding = FragmentHomeScreenBinding.bind(view)
         adapter = HomeScreenAdapter(emptyList(), this)
 
+        showHomeScreen()
 
-
-        viewModel.fetchLatestPosts().observe(viewLifecycleOwner, Observer { result ->
-
-
-            when (result) {
-                is Result.Loading -> {
-                    binding.progressBar.show()
-                }
-
-                is Result.Success -> {
-                    binding.progressBar.hide()
-
-                    adapter.setNewList(result.data)
-
-                    if (result.data.isEmpty()) {
-                        binding.emptyContainer.show()
-                        return@Observer
-                    } else {
-                        binding.emptyContainer.hide()
-                    }
-
-                    binding.rvHome.adapter = adapter
-                    Log.d("POST LIST", result.data.toString())
-
-                }
-
-                is Result.Failure -> {
-                    binding.progressBar.hide()
-                    Toast.makeText(
-                        requireContext(),
-                        " Ocurrió un error: ${result.exception}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    Log.e("ERROR", "ERROR: ${result.exception}")
-                }
-            }
-        })
+//
+//        viewModel.fetchLatestPosts().observe(viewLifecycleOwner, Observer { result ->
+//
+//
+//            when (result) {
+//                is Result.Loading -> {
+//                    binding.progressBar.show()
+//                }
+//
+//                is Result.Success -> {
+//                    binding.progressBar.hide()
+//
+//                    adapter.setNewList(result.data)
+//
+//                    if (result.data.isEmpty()) {
+//                        binding.emptyContainer.show()
+//                        return@Observer
+//                    } else {
+//                        binding.emptyContainer.hide()
+//                    }
+//
+//                    binding.rvHome.adapter = adapter
+//                    Log.d("POST LIST", result.data.toString())
+//
+//                }
+//
+//                is Result.Failure -> {
+//                    binding.progressBar.hide()
+//                    Toast.makeText(
+//                        requireContext(),
+//                        " Ocurrió un error: ${result.exception}",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    Log.e("ERROR", "ERROR: ${result.exception}")
+//                }
+//            }
+//        })
 
 
     }
@@ -116,5 +118,15 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen),
         }
     }
 
+    private fun showHomeScreen() {
+
+        binding.lazyColumHome.setContent {
+
+            MaterialTheme {
+                HomeScreen(viewModel)
+            }
+
+        }
+    }
 
 }
